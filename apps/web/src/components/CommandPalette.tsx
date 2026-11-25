@@ -1,4 +1,5 @@
 import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { openCouncilLaunchDialog } from "./council/councilLaunch";
 import { decodeMsg, msg, T, useGT, useMessages, Var } from "gt-react";
 import { m, type MessageResolver } from "../i18n/messages";
 import { ThreadContextDragGhost } from "./chat/ThreadContextDragGhost";
@@ -83,6 +84,7 @@ import {
   SquarePenIcon,
   TextSearchIcon,
   UserPlusIcon,
+  UsersIcon,
   WorkflowIcon,
 } from "lucide-react";
 import { openThreadFind } from "./chat/threadFindStore";
@@ -1541,6 +1543,19 @@ function OpenCommandPaletteDialog(props: {
     });
   }
 
+  if (currentProjectEnvironmentId !== null && currentProjectId !== null) {
+    const target = { environmentId: currentProjectEnvironmentId, projectId: currentProjectId };
+    actionItems.push({
+      kind: "action",
+      value: "action:start-council",
+      searchTerms: ["council", "wayfinder", "reviewers", "models", "fusion", "prototype", "spec"],
+      title: gt("Start council"),
+      icon: <UsersIcon className={ITEM_ICON_CLASS} />,
+      run: async () => {
+        openCouncilLaunchDialog(target);
+      },
+    });
+  }
   if (activeThread !== null && canShareActiveThreadWithGuest) {
     const threadRef = scopeThreadRef(activeThread.environmentId, activeThread.id);
     actionItems.push({

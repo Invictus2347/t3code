@@ -1,4 +1,5 @@
 import { m } from "../i18n/messages";
+import { CouncilStrip } from "./council/CouncilStrip";
 import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
 import { useGT, useMessages } from "gt-react";
 import { ChildThreadApprovals } from "./chat/ChildThreadApprovals";
@@ -3642,6 +3643,9 @@ export default function ChatView(props: ChatViewProps) {
               {...conversationArea}
               className="relative flex min-h-0 flex-1 flex-col bg-background"
             >
+              <CouncilStrip
+                threadRef={scopeThreadRef(activeThread.environmentId, activeThread.id)}
+              />
               <WorkspaceMutationIdContext value={workspaceMutationId}>
                 <ThreadTimeline
                   pendingApprovals={pendingApprovals}
