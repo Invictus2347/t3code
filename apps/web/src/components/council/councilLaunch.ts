@@ -120,14 +120,25 @@ export function councilLaunchMessage(config: CouncilConfig, problem: string): st
 
 const STORAGE_KEY = "t3code:council:last-config";
 
+function isSeat(value: unknown): value is CouncilSeat {
+  if (typeof value !== "object" || value === null) return false;
+  const seat = value as Record<string, unknown>;
+  return (
+    typeof seat.instanceId === "string" &&
+    typeof seat.model === "string" &&
+    (seat.effort === null || typeof seat.effort === "string")
+  );
+}
+
 export function readSavedCouncilConfig(): CouncilConfig {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_COUNCIL_CONFIG;
     const parsed = JSON.parse(raw) as Partial<CouncilConfig>;
     if (
-      !parsed.lead ||
+      !isSeat(parsed.lead) ||
       !Array.isArray(parsed.reviewers) ||
+      !parsed.reviewers.every(isSeat) ||
       !COUNCIL_WORKFLOWS.includes(parsed.workflow as CouncilWorkflow)
     ) {
       return DEFAULT_COUNCIL_CONFIG;

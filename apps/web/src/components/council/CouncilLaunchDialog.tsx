@@ -92,7 +92,7 @@ function CouncilLaunchDialog({ target }: { readonly target: CouncilLaunchTarget 
     setError(null);
     const normalize = (seat: CouncilSeat): CouncilSeat => ({
       ...seat,
-      effort: resolveEffort(effortControlFor(findModel(seat)), seat.effort) ?? seat.effort,
+      effort: resolveEffort(effortControlFor(findModel(seat)), seat.effort),
     });
     const launched: CouncilConfig = {
       ...config,
